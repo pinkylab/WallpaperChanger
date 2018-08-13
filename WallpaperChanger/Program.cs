@@ -11,14 +11,25 @@ namespace WallpaperChanger
 {
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
-            var client = new UnsplasharpClient("API_KEY");
+            string apikey = "";
+
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Please set Unsplash API Key in first arg.");
+                return;
+            }
+            else
+            {
+                apikey = args[0];
+            }
+
+            var client = new UnsplasharpClient(apikey);
             Unsplasharp.Models.Photo randomPhoto = null;
 
             string imagePath = "";
 
-            // ランダムに画像を取得/保存
             Task task = Task.Factory.StartNew(async () =>
             {
                 randomPhoto = await client.GetRandomPhoto();
@@ -27,6 +38,8 @@ namespace WallpaperChanger
 
             task.Wait();
 
+            // %TEMP%に保存
+            // 
             imagePath = Path.GetTempPath() + randomPhoto.Id + ".jpg"; // jpg決め打ちでいいのかな・・・
 
             WebClient wc = new WebClient();
@@ -67,6 +80,8 @@ namespace WallpaperChanger
         }
     }
 
+
+    // https://smdn.jp/programming/tips/setdeskwallpaper/
     /// <summary>壁紙の設定を行うためのクラス</summary>
     static class Wallpaper
     {
