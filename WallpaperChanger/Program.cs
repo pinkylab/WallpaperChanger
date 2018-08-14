@@ -13,8 +13,16 @@ namespace WallpaperChanger
     {
         static void Main(string[] args)
         {
+            Unsplash unsplash;
 
-            Unsplash unsplash = new Unsplash(args[0]);
+            if(args.Length == 0)
+            {
+                unsplash = new Unsplash();
+            }
+            else
+            {
+                unsplash = new Unsplash(args[0]);
+            }
 
             WebClient wc = new WebClient();
             wc.DownloadFile(unsplash.DownloadLink, unsplash.SavePath);
